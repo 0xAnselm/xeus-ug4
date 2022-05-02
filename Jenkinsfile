@@ -21,7 +21,6 @@ node {
             jupyterUG4.push("latest")
         }
     }
-}
     post { 
         always { 
             echo 'I will always clean'
