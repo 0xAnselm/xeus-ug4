@@ -3,6 +3,7 @@ node {
 
     stage('Clone repository') {
         checkout scm
+        sh 'cat /etc/os-release'
         sh 'docker version' 
     }
 
