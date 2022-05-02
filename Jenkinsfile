@@ -3,6 +3,7 @@ node {
 
     stage('Clone repository') {
         checkout scm
+        sh 'docker version' 
     }
 
     stage('Build image') {
