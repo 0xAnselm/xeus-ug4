@@ -1,3 +1,4 @@
+// Reference https://www.jenkins.io/doc/book/pipeline/docker/
 node {
     def jupyterUG4
 
