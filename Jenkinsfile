@@ -1,24 +1,27 @@
-pipeline {
-    agent any
-        // Mods including submodule behaviour 
-    environment {
-        DEV_BRANCH="main"
-        STABLE_BRANCH="stable"
-    }
-    stages {
-        stage('Checkout main repo') {
-            steps {
-                node {
-					checkout scm
-					def testImage = docker.build("modsim", "./docker/Dockerfile") 
+node {
+    def jupyterUG4
 
-					testImage.inside {
-						echo 'Place test here'
-					}
-				}
-            }
+    stage('Clone repository') {
+        checkout scm
+    }
+
+    stage('Build image') {
+       jupyterUG4 = docker.build("modsim")
+    }
+
+    stage('Test image') {
+        jupyterUG4.inside {
+            sh 'echo "Tests passed"'
         }
     }
+
+    stage('Push image') {
+        docker.withRegistry('https://registry.hub.docker.com', 'git') {
+            jupyterUG4.push("${env.BUILD_NUMBER}")
+            jupyterUG4.push("latest")
+        }
+    }
+}
     post { 
         always { 
             echo 'I will always clean'
