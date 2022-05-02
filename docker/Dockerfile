@@ -9,15 +9,17 @@ USER root
 RUN apt-get update \
     && apt-get install -y \
     cmake \
+    gnuplot \
+    octave \
     pkg-config \
+    liboctave-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 USER jovyan
-RUN pip install --upgrade pip && pip install sympy numpy matplotlib
+RUN pip install --upgrade pip && pip install octave_kernel sympy numpy matplotlib
 WORKDIR ${HOME}/.jupyter
-RUN echo -e "c.NotebookApp.password = u'' \nc.NotebookApp.ip = '*' \nc.NotebookApp.token=''" >> jupyter_notebook_config.py 
-
+RUN echo -e "c.NotebookApp.password = u'' \nc.NotebookApp.ip = '*' \nc.NotebookApp.token=''">> jupyter_notebook_config.py 
 
 # Installing ug4 as mentioned in README of git repo
 USER root 
@@ -44,6 +46,9 @@ SHELL ["conda", "run", "--no-capture-output", "-n", "xeus-ug4-env", "/bin/bash",
 RUN conda env list && \
     conda install -n ${XEUS_ENV} -y -c conda-forge cmake cppzmq xwidgets nlohmann_json xtl xeus-cling xeus==0.25 jupyterlab && \
     conda install -n ${XEUS_ENV} -y -c anaconda jupyter && \ 
+    conda clean --all -f -y && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/jovyan" && \
     conda list
 RUN conda env list && \
     echo $UG4_ROOT && \
@@ -56,4 +61,7 @@ RUN conda env list && \
 # Entering workdir and installing new xeus-UG4 kernel for user jovyan, s.t. jupyter is aware of new kernel in other conda env
 USER jovyan
 RUN jupyter kernelspec install --user /opt/conda/envs/xeus-ug4-env/share/jupyter/kernels/ug4_kernel
-WORKDIR /home/jovyan
+WORKDIR ${HOME}
+# COPY --chown=$NB_USER:$NB_GID ./myFiles /home/jovyan/
+COPY --chown=jovyan:100 ./myFiles /home/jovyan/
+

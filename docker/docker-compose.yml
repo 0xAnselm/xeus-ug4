@@ -1,21 +1,21 @@
+# Refer to https://jupyter-docker-stacks.readthedocs.io/en/latest/using/common.html for env args
 version: "3.9" 
 services:
   modsim:
     ports:
       - '8888:8888'
       - '8889:8889'
+      - '1111:22'
     dns:
       - 8.8.8.8
-    user: jovyan
+    user: root
     environment:
-      - GRANT_SUDO=yes
+      - NB_USER=jovyan
       - CHOWN_HOME=yes
-      - CHOWN_HOME_OPTS="-R"
+      - CHOWN_EXTRA="myFiles"
     volumes:
       - ./myFiles:/home/jovyan/myFiles
     image: modsim:latest
 volumes:
   myFiles:
     external: true
-
-
