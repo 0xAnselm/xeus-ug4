@@ -13,16 +13,17 @@ node {
 
     stage('Test image') {
         jupyterUG4.inside {
-            sh 'echo "Tests passed"'
+            echo 'Tests passed'
         }
     }
-
+	/*
     stage('Push image') {
         docker.withRegistry('https://registry.hub.docker.com', 'git') {
             jupyterUG4.push("${env.BUILD_NUMBER}")
             jupyterUG4.push("latest")
         }
     }
+    */
     post { 
         always { 
             echo 'I will always clean'
