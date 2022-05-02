@@ -39,6 +39,7 @@ jupyter kernelspec install --user /opt/conda/envs/xeus-ug4-env/share/jupyter/ker
 ## Documentation
 
 Documentation is not available yet.
+
 If you run `jupyter kernelspec list` you should see an output like this. [Note the `(base)` env]
 ```
 (base) jovyan@b7d9f90be5c5:~$ jupyter kernelspec list
