@@ -15,7 +15,7 @@ services:
       - CHOWN_EXTRA=myFiles
     volumes:
       - ./myFiles:/home/jovyan/myFiles
-    image: modsim:latest
+    image: zg9ja2vy/modsim:latest
 volumes:
   myFiles:
     external: true
