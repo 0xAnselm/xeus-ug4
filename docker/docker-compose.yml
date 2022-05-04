@@ -12,7 +12,7 @@ services:
     environment:
       - NB_USER=jovyan
       - CHOWN_HOME=yes
-      - CHOWN_EXTRA="myFiles"
+      - CHOWN_EXTRA=myFiles
     volumes:
       - ./myFiles:/home/jovyan/myFiles
     image: modsim:latest
